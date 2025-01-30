@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface FollowRepository {
     List<InquiryEntity> getDetails(String name);
+
+    List<InquiryEntity> getAllDetails();
 }

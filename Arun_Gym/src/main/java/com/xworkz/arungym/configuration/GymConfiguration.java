@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -17,6 +18,8 @@ import javax.sql.DataSource;
 @Slf4j
 @ComponentScan("com.xworkz.arungym")
 public class GymConfiguration {
+
+    private final int size =5 * 1024 * 1024;
 
     public GymConfiguration(){
         log.info("This is configuration class");
@@ -45,6 +48,15 @@ public class GymConfiguration {
     @Bean
     public ViewResolver viewResolver(){
         return new InternalResourceViewResolver("/", ".jsp");
+    }
+
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver(){
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        commonsMultipartResolver.setMaxUploadSize(size);
+        commonsMultipartResolver.setMaxInMemorySize(size);
+        return commonsMultipartResolver;
     }
 
 }

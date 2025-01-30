@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.stylesheets.LinkStyle;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,9 +25,18 @@ public class FollowServicceImpl implements FollowService{
     public List<InquiryEntity> getDeatils(String name) {
 
         log.info("Email from follow service: "+name);
-        List<InquiryEntity> entity = followRepository.getDetails(name);
+            List<InquiryEntity> entity = followRepository.getDetails(name);
         if(entity!=null){
             return entity;
+        }
+        return null;
+    }
+
+    @Override
+    public List<InquiryEntity> getAllDetails() {
+
+        if(!followRepository.getAllDetails().isEmpty()){
+            return followRepository.getAllDetails();
         }
         return null;
     }

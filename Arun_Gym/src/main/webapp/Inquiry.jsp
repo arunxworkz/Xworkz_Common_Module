@@ -84,20 +84,6 @@
     <input type="text" id="age" name="age" placeholder="Enter your age" required>
 
     <div class="auth-input-container">
-        <label for="status">Status:</label>
-        <select id = "status" name = "status">
-            <option>Status</option>
-            <c:forEach items = "${status}" var = "status">
-                <option value = "${status}">${status}</option>
-            </c:forEach>
-        </select>
-    <div>
-
-    <label for="message">Reason</label>
-    <input type="text" id="reason" name="reason" placeholder="Enter the statement" required>
-
-
-    <div class="auth-input-container">
         <label>Area</label>
         <select id="area" name="area">
             <option>Select the areas</option>

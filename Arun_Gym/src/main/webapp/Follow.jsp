@@ -29,6 +29,90 @@
             right: 20px;
             z-index: 1030;
         }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Reduced gap between rows */
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            gap: 10px; /* Reduced gap between columns */
+            align-items: center; /* Align items vertically */
+        }
+
+        .column {
+            flex: 1; /* Adjust columns to evenly share space */
+            text-align: left;
+        }
+
+        .column label {
+            font-weight: bold;
+            margin-right: 5px; /* Reduced margin between label and select */
+        }
+
+        .column select {
+            padding: 3px; /* Reduced padding for compact layout */
+            font-size: 14px;
+        }
+
+        hr {
+            border: 0.5px solid #ccc;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 16px;
+            text-align: left;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+
+        table th {
+            background-color: #f4f4f4;
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        table a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        table a:hover {
+            text-decoration: underline;
+        }
+
+        tbody td {
+            text-align: center;
+        }
+
+        thead th {
+            text-align: center;
+        }
+
+
     </style>
 </head>
 <body>
@@ -63,9 +147,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a href="getData" class="nav-link link-body-emphasis">
                         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                        Products
+                        Update
                     </a>
                 </li>
                 <li>
@@ -95,23 +179,50 @@
 
     <!-- Main content -->
     <div class="content">
-        <div class="search-bar">
+        <div class="search-bar" style = "margin-top: 20px">
             <form action = "getSearch" method = "post" class="d-flex" role="search">
                 <input class="form-control me-2" type="search" name = "search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
-        <div class="container mt-5">
-            <h1>Welcome</h1>
-            <p>Update the details</p>
-            <c:forEach var = "details" items = "${data}">
-                <p>${details.name}</p>
-                <hr>
-                <p>${details.age}</p>
+           <div style = "margin-left: 20px; margin-top: 20px">
+                <h1>Welcome</h1>
+                <p>Update the details</p>
+           </div>
+            <br>
+<div class="container">
+    <table border="1" cellspacing="0" cellpadding="8" style="width: 100%; text-align: left;">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="details" items="${entity}">
+                <tr>
+<input type = "hidden" name = "id" value = "${details.id}">
+                    <td>${details.name}</td>
+                    <td>${details.phNo}</td>
+                    <td>${details.reason}</td>
+                    <td>${details.status}</td>
+                    <td>
+                        <a href="updation/${details.id}">Update</a>
+                    </td>
+                </tr>
             </c:forEach>
-        </div>
-    </div>
+        </tbody>
+    </table>
+    <span style = "color: red">${error}</span>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js">
+
+
+    </script>
 </body>
 </html>

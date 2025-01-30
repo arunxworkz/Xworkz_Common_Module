@@ -36,9 +36,10 @@ public class InquiryRepoImpl implements InquiryRepository{
             if(entityTransaction.isActive())
                 entityTransaction.rollback();
             e.printStackTrace();
+            return false;
         }finally {
             entityManager.close();
         }
-        return false;
+
     }
 }

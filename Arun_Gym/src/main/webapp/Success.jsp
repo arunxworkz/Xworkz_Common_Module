@@ -9,6 +9,24 @@
         .sidebar {
             height: 100vh; /* Make sidebar full height */
         }
+        body {
+           background: linear-gradient(180deg, #121212, #1a1a1a); /* Shady black gradient */
+            color: white;
+        }
+        .form-control {
+            background-color: #2c2c2c;
+            color: white;
+            border: 1px solid #555;
+        }
+        .form-control:focus {
+            background-color: #1a1a1a;
+            color: white;
+            border-color: #777;
+            box-shadow: none;
+        }
+        .btn {
+            border-color: white;
+        }
     </style>
 </head>
 <body>
@@ -33,21 +51,21 @@
                             </a>
                         </li>
                         <li>
-                            <a href="Follow.jsp" class="nav-link link-body-emphasis">
+                            <a href="follow" class="nav-link link-body-emphasis">
                                 <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
                                 Follow
                             </a>
                         </li>
                         <li>
-                            <a href="Register.jsp" class="nav-link link-body-emphasis">
+                            <a href="register" class="nav-link link-body-emphasis">
                                 <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
                                 Register
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-body-emphasis">
+                            <a href="getData" class="nav-link link-body-emphasis">
                                 <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                                Products
+                                Update
                             </a>
                         </li>
                         <li>
@@ -77,7 +95,7 @@
 
             <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <h1 style = "padding: 10px; padding-top: 20px; display: inline-block; font-family: Georgia, serif; font-size: 40px">Welcome Admin: ${adminName}</h1>
+                <h1 style = "padding: 10px; padding-top: 20px; display: inline-block; font-family: Georgia, serif; font-size: 40px">Welcome Admin: ${AdminName}</h1>
                 <p style = "padding: 10px; padding-top: 20px; display: inline-block; font-size: 35px">Check for the Updates</p>
 
             </main>

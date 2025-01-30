@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -23,16 +24,33 @@ public class FollowRepositoryImpl implements FollowRepository{
         log.info("The name from the follow repository: "+name);
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();
-        InquiryEntity ent = null;
+//        List<InquiryEntity> ent = null;
         try{
             Query query = entityManager.createNamedQuery("getData");
-            query.setParameter("setName", "%"+name+"%");
+            query.setParameter("setName", name);
             return query.getResultList();
         }catch (Exception e){
             if(entityTransaction.isActive())
                 entityTransaction.rollback();
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public List<InquiryEntity> getAllDetails() {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            Query query = entityManager.createNamedQuery("getAllDetails");
+            return query.getResultList();
+        }catch(Exception e){
+            if(entityTransaction.isActive())
+                entityTransaction.rollback();
+            return null;
+        }finally {
+            entityManager.close();
         }
     }
 }

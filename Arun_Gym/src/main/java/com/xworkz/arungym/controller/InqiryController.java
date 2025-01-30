@@ -50,7 +50,7 @@ public class InqiryController {
             model.addAttribute("savedData", "Your data hase been Saved");
             return "Inquiry";
         }
-        return null;
+        return "Inqueryyyyyyyyyyyyy";
     }
 
 

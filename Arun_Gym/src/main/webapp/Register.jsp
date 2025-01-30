@@ -1,13 +1,14 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Registration Form with Sidebar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,30 +19,24 @@
         }
 
         .sidebar {
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            overflow-y: auto;
+            width: 250px;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
         }
 
         .main-content {
-            margin-left: 250px; /* Sidebar width */
+            flex: 1;
             padding: 20px;
-            flex-grow: 1;
-            background-color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .form-container {
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            background: #f8f9fa;
+            background: #fff;
             border-radius: 10px;
+            padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px; /* Reduced width of the form */
+            margin: auto; /* Center the form */
         }
 
         .form-container label {
@@ -57,11 +52,18 @@
         .form-container button:hover {
             background-color: #555;
         }
+
+        /* Responsive: adjust form width on small screens */
+        @media (max-width: 768px) {
+            .form-container {
+                max-width: 100%; /* Make the form responsive on smaller screens */
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar">
+    <nav class="sidebar">
         <div class="d-flex flex-column p-3">
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                 <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
@@ -71,29 +73,29 @@
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
                     <a href="inquiry" class="nav-link active" aria-current="page">
-                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" width="28" height="28">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" width="28" height="28">
                             <circle cx="15" cy="15" r="12" fill="#2196f3" />
                             <text x="14.5" y="20" fill="#fff" font-size="15" text-anchor="middle" font-family="Arial" font-weight="bold">?</text>
-                       </svg>
-                       Inquiry
+                        </svg>
+                        Inquiry
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a href="follow" class="nav-link link-body-emphasis">
                         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
                         Follow
                     </a>
                 </li>
                 <li>
-                    <a href="Register.jsp" class="nav-link link-body-emphasis">
+                    <a href="" class="nav-link link-body-emphasis">
                         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
                         Register
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a href="registerUpdate" class="nav-link link-body-emphasis">
                         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                        Products
+                        Update
                     </a>
                 </li>
                 <li>
@@ -121,49 +123,119 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="main-content">
         <div class="form-container">
             <h2 class="text-center mb-4">Registration Form</h2>
-            <form action="#" method="post">
+            <form id="register" action = "registering" method = "post">
+
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" class="form-control mb-3" placeholder="Enter your name" required>
 
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" class="form-control mb-3" placeholder="Enter your email" required>
 
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" class="form-control mb-3" placeholder="Enter password" required>
 
-                <label for="package">Package:</label>
-                <input type="text" id="package" name="package" class="form-control mb-3" placeholder="Enter package name" required>
-
-                <label for="trainer">Trainer:</label>
-                <input type="text" id="trainer" name="trainer" class="form-control mb-3" placeholder="Enter trainer name" required>
 
                 <label for="phone">Phone Number:</label>
-                <input type="text" id="phone" name="phone" class="form-control mb-3" placeholder="Enter phone number" required>
+                    <input type="text" id="phone" name="phNo" class="form-control mb-3" placeholder="Enter your phone number" required>
 
-                <label for="amount">Amount:</label>
-                <input type="number" id="amount" name="amount" class="form-control mb-3" placeholder="Enter amount" required>
+                <label for = "gender">Gender</label>
+                <div class = "mb-3">
+                    Male <input type = "radio" id = "male" name = "gender" value = "male">
+                    Female <input type = "radio" id = "female" name = "gender" value = "female">
+                <div>
 
-                <label for="discount">Discount:</label>
-                <input type="number" id="discount" name="discount" class="form-control mb-3" placeholder="Enter discount" required>
+                <label for="package">Package:</label>
+                <select id="package" name="packages" class="form-control mb-3" required>
+                    <option value="" disabled selected>Select Package</option>
+                    <option value="5000" data-discount="5">Basic (5% Discount)</option>
+                    <option value="7000" data-discount="10">Silver (10% Discount)</option>
+                    <option value="10000" data-discount="15">Gold (15% Discount)</option>
+                    <option value="15000" data-discount="20">Platinum (20% Discount)</option>
+                </select>
 
-                <label for="gymname">Gym Name:</label>
-                <input type="text" id="gymname" name="gymname" class="form-control mb-3" placeholder="Enter gym name" required>
 
-                <label for="balance">Balance Amount:</label>
-                <input type="number" id="balance" name="balance" class="form-control mb-3" placeholder="Enter balance amount" required>
+                <label for="trainer">Trainer:</label>
+                <div class="mb-3">
+                    <input type="radio" id="trainerYes" name="trainer" value="2000">
+                    <label for="trainerYes">Yes (+₹2000)</label>
+                    <input type="radio" id="trainerNo" name="trainer" value="0" >
+                    <label for="trainerNo">No</label>
+                </div>
+
 
                 <label for="installment">Installment:</label>
-                <input type="text" id="installment" name="installment" class="form-control mb-3" placeholder="Enter installment details" required>
+                <select id="installment" name="installment" class="form-control mb-3" required onblur = "calculateTotalAmount()">
+                    <option value="" disabled selected>Select Installment</option>
+                    <option value="2">2 months</option>
+                    <option value="5">5 months</option>
+                    <option value="7">7 months</option>
+                    <option value="10">10 months</option>
+                </select>
+
+                <!-- Calculated Fields -->
+                <label for="totalAmount">Total Amount:</label>
+                <input type="text" id="totalAmount" name = "totalAmmount" class="form-control mb-3"  value = "${totalAmmount}">
+
+                <label for="balance">Balance Amount:</label>
+                <input type="text" id="balannce" class="form-control mb-3" name = "balance" value = "${balannce}" onblur = "calculateBalance()">
+
+                <label for = "installmentAmmount">Installment Amount</label>
+                <input type = "hidden" id = ""/>
 
                 <button type="submit" class="btn btn-dark w-100">Register</button>
             </form>
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+       function calculateTotalAmount(){
+            const package =  document.getElementById("package").value;
+            console.log(package);
+            const installement = document.getElementById("installment").value;
+            console.log(installement);
+
+           // const trainerYes = document.getElementById("trainerYes").value;
+           // console.log(trainerYes);
+          //  const trainerNo = document.getElementById("trainerNo").value;
+            //console.log(trainerNo);
+
+            var trainerYes
+
+            if(document.getElementById("trainerYes").checked) {
+                trainerYes = document.getElementById("trainerYes").value;
+                console.log(trainerYes);
+            }
+            if(document.getElementById("trainerNo").checked) {
+                trainerYes = document.getElementById("trainerNo").value;
+                console.log(trainerYes);
+            }
+
+            var xhttp = new XMLHttpRequest();
+                xhttp.open("GET", "http://localhost:8080/Arun_Gym/forTotalAmmount/"+package + "/"+installement + "/" + trainerYes);
+                xhttp.send();
+                xhttp.onload = function(){
+                    console.log(this.responseText)
+                    document.getElementById("totalAmount").value = this.responseText;
+                    console.log(this.totalAmount);
+                }
+       }
+
+        function calculateBalance(){
+            const totalAmount = document.getElementById("totalAmount").value;
+            const installment = document.getElementById("installment").value;
+
+            var xhttp = new XMLHttpRequest();
+                xhttp.open("GET", "http://localhost:8080/Arun_Gym/balance/"+totalAmount + "/" + installment);
+                xhttp.send();
+                xhttp.onload = function(){
+                    console.log(this.responseText)
+                    document.getElementById("balannce").value = this.responseText;
+                    console.log(this.balance);
+                }
+        }
+    </script>
+
+
 </body>
 </html>
