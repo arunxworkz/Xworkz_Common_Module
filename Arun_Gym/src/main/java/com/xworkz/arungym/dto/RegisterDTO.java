@@ -29,4 +29,5 @@ public class RegisterDTO {
     int installment;
     long totalAmmount;
     String balance;
+    String trainerName;
 }

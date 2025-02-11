@@ -105,6 +105,7 @@ public class RegisterServiceImpl implements RegisterService{
                 registerEntity.setBalanceAmmount(Long.parseLong(dto.getBalance()));
                 registerEntity.setInstallmentAmount(calculateInstallments(dto.getTotalAmmount(), dto.getInstallment()));
                 registerEntity.setSignincount(-1);
+                registerEntity.setTrainername(dto.getTrainerName());
                 if(registerRepository.onSave(registerEntity)){
                     saveEmail(dto.getEmail(), registerEntity.getPassword());
                     return true;

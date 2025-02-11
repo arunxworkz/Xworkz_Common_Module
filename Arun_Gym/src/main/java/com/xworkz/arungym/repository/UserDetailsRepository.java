@@ -8,4 +8,8 @@ public interface UserDetailsRepository {
     RegisterEntity getDataByEmail(String email);
 
     boolean updatePassword(RegisterEntity entity);
+
+    boolean userDetailsUpdate(RegisterEntity entity);
+
+    RegisterEntity getDataById(int id);
 }

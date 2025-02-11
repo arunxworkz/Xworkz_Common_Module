@@ -6,24 +6,42 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
+        body {
+            background: url('https://t4.ftcdn.net/jpg/02/51/45/49/360_F_251454966_MSoiZITSgkSgIs2qGr1SnfJOYdhd6ieJ.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            position: relative;
+        }
+
+        /* Adding Black and White Shades */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0.1));
+            z-index: -1;
+        }
+
         .sidebar {
             height: 100vh; /* Make sidebar full height */
         }
-        body {
-           background: linear-gradient(180deg, #121212, #1a1a1a); /* Shady black gradient */
-            color: white;
-        }
+
         .form-control {
             background-color: #2c2c2c;
             color: white;
             border: 1px solid #555;
         }
+
         .form-control:focus {
             background-color: #1a1a1a;
             color: white;
             border-color: #777;
             box-shadow: none;
         }
+
         .btn {
             border-color: white;
         }
@@ -35,14 +53,14 @@
             <!-- Sidebar -->
             <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar">
                 <div class="d-flex flex-column p-3">
-                    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                    <a href="adminPage" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                         <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                        <span class="fs-4">Sidebar</span>
+                        <span class="fs-4">Admin Base</span>
                     </a>
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="inquiry" class="nav-link active" aria-current="page">
+                            <a href="inquiry" class="nav-link" aria-current="page">
                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" width="28" height="28">
                                     <circle cx="15" cy="15" r="12" fill="#2196f3" />
                                     <text x="14.5" y="20" fill="#fff" font-size="15" text-anchor="middle" font-family="Arial" font-weight="bold">?</text>
@@ -69,9 +87,15 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-body-emphasis">
+                            <a href="AddSlots.jsp" class="nav-link link-body-emphasis">
                                 <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                                Customers
+                                Slots
+                            </a>
+                        </li>
+                        <li>
+                            <a href="trainerAllotment" class="nav-link link-body-emphasis">
+                            <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+                                 Trainer Allotment
                             </a>
                         </li>
                     </ul>

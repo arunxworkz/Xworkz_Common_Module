@@ -4,9 +4,11 @@ import com.xworkz.arungym.dto.RegisterDTO;
 import com.xworkz.arungym.entity.RegisterEntity;
 import com.xworkz.arungym.repository.RegisteUpdateRepository;
 import com.xworkz.arungym.repository.RegisterRepository;
+import com.xworkz.arungym.repository.UserDetailsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,9 @@ public class RegisterUpdateServiceImpl implements RegisterUpdateService{
 
     @Autowired
     private RegisteUpdateRepository registeUpdateRepository;
+
+    @Autowired
+    private UserDetailsRepository userDetailsRepository;
 
     public RegisterUpdateServiceImpl(){
         log.info("This is Register Update Service");
@@ -75,6 +80,24 @@ public class RegisterUpdateServiceImpl implements RegisterUpdateService{
         entity.setInstallement(installment);
         if(entity != null){
             return  registeUpdateRepository.onUpdate(entity);
+        }
+        return null;
+    }
+
+
+    @Override
+    public RegisterEntity userUpdate(int id, float height, float weight, int age, String file) {
+
+        RegisterEntity registerEntity = userDetailsRepository.getDataById(id);
+        if(registerEntity!=null){
+
+            registerEntity.setAge(age);
+            registerEntity.setHeight(height);
+            registerEntity.setWeight(weight);
+            registerEntity.setFilename(file);
+            if(userDetailsRepository.userDetailsUpdate(registerEntity)){
+                return registerEntity;
+            }
         }
         return null;
     }

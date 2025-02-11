@@ -66,10 +66,10 @@ public class RegisterEntity {
     long installmentAmount;
 
     @Column(name = "age")
-    int age;
+    Integer age;
 
     @Column(name = "signincount")
-    int signincount;
+    Integer signincount;
 
     @Column(name = "logintime")
     LocalDateTime logintime;
@@ -78,9 +78,15 @@ public class RegisterEntity {
     LocalDateTime accountlocktime;
 
     @Column(name = "weight")
-    float weight;
+    Float weight;
 
     @Column(name = "height")
-    float height;
+    Float height;
+
+    @Column(name = "filename")
+    String filename;
+
+    @Column(name = "trainername")
+    String trainername;
 
 }

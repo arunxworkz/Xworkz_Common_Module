@@ -48,14 +48,19 @@ public class RegisterUpdateRepoImpl implements RegisteUpdateRepository{
     @Override
     public List<RegisterEntity> getAllDetails() {
 
-//        EntityManager entityManager = entityManagerFactory.createEntityManager();
-//        EntityTransaction entityTransaction = entityManager.getTransaction();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
 
         try{
-            Query query = entityManagerFactory.createEntityManager().createNamedQuery("getALL");
+
+            Query query = entityManager.createNamedQuery("getALL");
             return query.getResultList();
         }catch (Exception e){
+            if(entityTransaction.isActive())
+                entityTransaction.rollback();
             e.printStackTrace();
+        }finally {
+            entityManager.close();
         }
         return Collections.emptyList();
     }

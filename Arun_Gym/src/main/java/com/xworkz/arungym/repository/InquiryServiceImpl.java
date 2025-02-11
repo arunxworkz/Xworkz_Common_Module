@@ -4,8 +4,6 @@ import com.xworkz.arungym.dto.InquirtDTO;
 import com.xworkz.arungym.entity.InquiryEntity;
 import com.xworkz.arungym.service.InquiryRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +31,9 @@ public class InquiryServiceImpl implements InquiryService {
             return false;
         }
 
-        if (dto.getName() == null || dto.getName().length() <= 3) {
+        if (dto.getName() == null || dto.getName().length() < 3 && dto.getName().matches(".*[0-9].*")) {
             log.info("Name is not valid");
+//            model.addAttribute("nameError", "Name should contain only alphabets with more than 3 characters");
             return false;
         }
         log.info("Name is correct");
@@ -45,20 +44,23 @@ public class InquiryServiceImpl implements InquiryService {
         }
         log.info("Area is valid");
 
-        if (dto.getDistance() == 0) {
+        if (dto.getDistance() == 0 && dto.getDistance() < 1 && dto.getDistance() > 30) {
             log.info("Distance is not valid");
+//            model.addAttribute("disatanceError", "Distance should be with in 30 Km");
             return false;
         }
         log.info("Distance is correct");
 
-        if (dto.getPhNo() == null || dto.getPhNo().length() != 10) {
+        if (dto.getPhNo() == null || dto.getPhNo().length() != 10 && dto.getPhNo().matches("^[a-zA-Z]+$")) {
             log.info("Phone number is not valid");
+//            model.addAttribute("phoneNumberError", "Phone number should contain only digits");
             return false;
         }
         log.info("Phone number is valid");
 
-        if (dto.getAge() <= 15) {
+        if (dto.getAge() < 15 && dto.getAge() > 60 && dto.getAge() == 0) {
             log.info("Age is not valid");
+//            model.addAttribute("ageError", "Age must be within 15 and 60");
             return false;
         }
         log.info("Age is valid");

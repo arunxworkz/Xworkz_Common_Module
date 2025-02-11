@@ -2,6 +2,7 @@ package com.xworkz.arungym.service;
 
 import com.xworkz.arungym.dto.RegisterDTO;
 import com.xworkz.arungym.entity.RegisterEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface RegisterUpdateService {
 
     public List<RegisterEntity> getDataByName(String name);
 
+    public RegisterEntity userUpdate(int id, float height, float weight, int age, String file);
 }

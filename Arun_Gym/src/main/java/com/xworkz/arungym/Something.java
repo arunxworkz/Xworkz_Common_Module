@@ -17,6 +17,9 @@ public class Something {
 
         List<RegisterEntity> list1 = Collections.emptyList();
         System.out.println("List1: "+list1);
+
+
+
     }
 
 }

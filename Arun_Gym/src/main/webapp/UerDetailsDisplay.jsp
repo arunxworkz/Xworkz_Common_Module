@@ -27,6 +27,27 @@
             box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
         }
 
+        .profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 3px solid white;
+        }
+
+        .profile h2 {
+            color: white;
+            margin: 0;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -60,45 +81,58 @@
             cursor: pointer;
             border-radius: 5px;
             font-size: 16px;
+            text-decoration: none;
         }
 
         button:hover {
             background: #218838;
+        }
+
+        button a {
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2 style="color: white;">User Details</h2>
+        <div class="profile">
+            <img src="getImage?fileName=${userdetails.filename}" alt="${fileName}">
+            <h2><c:out value="${userdetails.name}"/></h2>
+        </div>
+
         <table>
             <tr>
                 <th>Details</th>
                 <th>Values</th>
             </tr>
             <tr>
-                <td>Name</td>
-                <td><c:out value = "${userdetails.name}"/></td>
-            </tr>
-            <tr>
                 <td>Email</td>
-                <td><c:out value = "${userdetails.email}"/></td>
+                <td><c:out value="${userdetails.email}"/></td>
             </tr>
             <tr>
                 <td>Phone Number</td>
-                <td><c:out value = "${userdetails.phoneNumber}"/></td>
+                <td><c:out value="${userdetails.phoneNumber}"/></td>
             </tr>
             <tr>
                 <td>Package</td>
-                <td><c:out value = "${userdetails.packages}"/></td>
+                <td><c:out value="${userdetails.packages}"/></td>
             </tr>
             <tr>
                 <td>Balance</td>
-                <td><c:out value = "${userdetails.balanceAmmount}"/></td>
+                <td><c:out value="${userdetails.balanceAmmount}"/></td>
+            </tr>
+            <tr>
+                <td>Trainer</td>
+                <td c:out value = "${userdetails.trainername}"></td>
             </tr>
             <tr>
                 <td colspan="2" style="text-align: center;">
-                    <button><a href = "userDetailsUpdate/${userdetails.id}">Update</button>
+                    <button><a href="userDetailsUpdate/${userdetails.id}">Update</a></button>
                 </td>
             </tr>
         </table>

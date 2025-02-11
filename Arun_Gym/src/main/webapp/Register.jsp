@@ -6,17 +6,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form with Sidebar</title>
+    <title>User Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            min-height: 100vh;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: url('https://kayradecor.com/cdn/shop/products/2_787e9bf4-8ef7-445a-b325-de12f39c29fb.jpg?v=1680179305&width=1445') no-repeat center center/cover;
+    filter: grayscale(100%);
+    display: flex;
+    min-height: 100vh;
+}
 
         .sidebar {
             width: 250px;
@@ -30,14 +31,31 @@
             padding: 20px;
         }
 
-        .form-container {
-            background: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px; /* Reduced width of the form */
-            margin: auto; /* Center the form */
-        }
+.form-container {
+    background: rgba(255, 255, 255, 0.3); /* Semi-transparent white */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: auto;
+    backdrop-filter: blur(10px); /* Adds blur effect */
+}
+
+/* Ensure input fields are visible */
+.form-container input,
+.form-container select {
+    background: rgba(255, 255, 255, 0.8); /* Semi-solid background for visibility */
+    color: black; /* Ensures text is readable */
+    border: 1px solid #555; /* Dark border for contrast */
+    padding: 8px;
+}
+
+/* Adjust placeholder text visibility */
+.form-container input::placeholder {
+    color: #333; /* Darker placeholder text */
+}
+
+
 
         .form-container label {
             font-weight: bold;
@@ -65,14 +83,14 @@
 <body>
     <nav class="sidebar">
         <div class="d-flex flex-column p-3">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <a href="Success.jsp" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                 <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
                 <span class="fs-4">Sidebar</span>
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="inquiry" class="nav-link active" aria-current="page">
+                    <a href="inquiry" class="nav-link" aria-current="page">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" width="28" height="28">
                             <circle cx="15" cy="15" r="12" fill="#2196f3" />
                             <text x="14.5" y="20" fill="#fff" font-size="15" text-anchor="middle" font-family="Arial" font-weight="bold">?</text>
@@ -87,7 +105,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="" class="nav-link link-body-emphasis">
+                    <a href="register" class="nav-link link-body-emphasis">
                         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
                         Register
                     </a>
@@ -99,9 +117,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a href="AddSlots.jsp" class="nav-link link-body-emphasis">
                         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                        Customers
+                        Slots
+                    </a>
+                </li>
+                <li>
+                    <a href="trainerAllotment" class="nav-link link-body-emphasis">
+                       <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+                       Trainer Allotment
                     </a>
                 </li>
             </ul>
@@ -163,6 +187,15 @@
                     <label for="trainerNo">No</label>
                 </div>
 
+                <div class="auth-input-container">
+                    <label for="trainer">Select Trainer:</label>
+                    <select id = "trainerName" name = "trainerName">
+                        <option>Select Trainer</option>
+                        <c:forEach items = "${trainerName}" var = "names">
+                            <option value = "${names}">${names}</option>
+                        </c:forEach>
+                    </select>
+                </div>
 
                 <label for="installment">Installment:</label>
                 <select id="installment" name="installment" class="form-control mb-3" required onblur = "calculateTotalAmount()">

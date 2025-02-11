@@ -66,4 +66,40 @@ public class UserDetailsRepoImpl implements UserDetailsRepository{
             return false;
         }
     }
+
+
+    @Override
+    public RegisterEntity getDataById(int id) {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            Query query = entityManager.createNamedQuery("getRegisterEntityById");
+            query.setParameter("setId", id);
+            return (RegisterEntity) query.getSingleResult();
+        } catch (Exception e) {
+            if (entityTransaction.isActive())
+                entityTransaction.rollback();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean userDetailsUpdate(RegisterEntity entity) {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            entityTransaction.begin();
+            entityManager.merge(entity);
+            entityTransaction.commit();
+            return true;
+        }catch (Exception e){
+            if(entityTransaction.isActive())
+                entityTransaction.rollback();
+            return false;
+        }
+    }
+
 }
