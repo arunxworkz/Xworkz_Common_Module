@@ -26,6 +26,10 @@ import java.time.LocalDateTime;
 
 @NamedQuery(name = "forScheduler", query = "update RegisterEntity rd set rd.signincount = 0 where rd.accountlocktime < : currentTime")
 
+@NamedQuery(name = "getAllDetailsOfCustomer", query = "select re from RegisterEntity re where re.trainer = 0")
+
+@NamedQuery(name = "getAllDetailsofCustomrtWithTrainer", query = "select re from RegisterEntity re where re.trainer = 2000")
+
 public class RegisterEntity {
 
     @Id
@@ -88,5 +92,7 @@ public class RegisterEntity {
 
     @Column(name = "trainername")
     String trainername;
+
+    @Column(name = "")
 
 }

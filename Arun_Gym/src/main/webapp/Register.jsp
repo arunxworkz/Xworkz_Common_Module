@@ -187,15 +187,6 @@ body {
                     <label for="trainerNo">No</label>
                 </div>
 
-                <div class="auth-input-container">
-                    <label for="trainer">Select Trainer:</label>
-                    <select id = "trainerName" name = "trainerName">
-                        <option>Select Trainer</option>
-                        <c:forEach items = "${trainerName}" var = "names">
-                            <option value = "${names}">${names}</option>
-                        </c:forEach>
-                    </select>
-                </div>
 
                 <label for="installment">Installment:</label>
                 <select id="installment" name="installment" class="form-control mb-3" required onblur = "calculateTotalAmount()">

@@ -11,6 +11,8 @@ import javax.persistence.*;
 
 @NamedQuery(name = "getAllTrainerDetails", query = "select ta from TrainerTimeAllotmentEntity ta")
 @NamedQuery(name = "deleteTrainerDetails", query = "delete from TrainerTimeAllotmentEntity ta where ta.id=: setId")
+@NamedQuery(name = "getTrainerSlot", query = "select ta.timeRange from TrainerTimeAllotmentEntity ta where ta.name=: setName")
+
 public class TrainerTimeAllotmentEntity {
 
     @Id

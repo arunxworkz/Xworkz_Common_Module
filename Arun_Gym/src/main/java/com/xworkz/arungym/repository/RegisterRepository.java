@@ -14,4 +14,9 @@ public interface RegisterRepository {
     boolean updateEntity(RegisterEntity entity);
 
     void timeSchedulre();
+
+    List<RegisterEntity> getAllDetails();
+
+    List<RegisterEntity> getCustomrtDetailsWithTrainer();
+
 }

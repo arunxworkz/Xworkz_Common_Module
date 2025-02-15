@@ -186,13 +186,6 @@
                     <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
                     <strong>Admin</strong>
                 </a>
-                <ul class="dropdown-menu text-small shadow">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
-                </ul>
             </div>
         </div>
     </nav>
@@ -200,7 +193,7 @@
     <div class="content">
         <div class="form-container">
             <h2>Contact Form</h2>
-            <form action="trainerTimingAllotment" method="POST">
+            <form action="trainerTimingAllotment" method="POST" onsubmit = "return validForm()">
                 <select id = "names" name = "name">
                     <option>Select Trainer</option>
                     <c:forEach items = "${trainerNames}" var = "names">
@@ -209,7 +202,8 @@
                 </select>
 
                 <label for="phone">Phone Number:</label>
-                <input type="text" id="phone" name="phone" required>
+                <input type="text" id="phone" name="phone" required onchange = "return validPhnoNumer()">
+                <span id = "phNoError" style="color: red"></span>
 
                 <select id="timeRange" name="timeRange">
                     <option>Select Time Range</option>
@@ -226,7 +220,25 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+            function validPhnoNumer(){
+                let phNo = document.getElementById("phone").value;
+                let regexNo = /^[0-9]{10}$/;
+                if(!regexNo.test(phNo)){
+                    document.getElementById("phNoError").innerHTML = "Phone number should be of 10 numbers";
+                    return false;
+                }else{
+                    document.getElementById("phNoError").innerHTML = "";
+                    return true;
+                }
+            }
+
+            function validForm(){
+                let validPhnoNumer = validPhnoNumer()
+                return validPhnoNumer;
+            }
+    </script>
 
 </body>
 </html>

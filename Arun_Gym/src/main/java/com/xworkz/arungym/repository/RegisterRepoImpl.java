@@ -1,16 +1,18 @@
 package com.xworkz.arungym.repository;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.xworkz.arungym.entity.RegisterEntity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 @Repository
 public class RegisterRepoImpl implements RegisterRepository{
@@ -105,5 +107,40 @@ public class RegisterRepoImpl implements RegisterRepository{
         }finally {
             entityManagerFactory.createEntityManager().close();
         }
+    }
+
+    @Override
+    public List<RegisterEntity> getAllDetails() {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            Query query = entityManager.createNamedQuery("getAllDetailsOfCustomer");
+            return query.getResultList();
+
+        }catch (Exception e){
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public List<RegisterEntity> getCustomrtDetailsWithTrainer() {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            Query query = entityManager.createNamedQuery("getAllDetailsofCustomrtWithTrainer");
+            return query.getResultList();
+        }catch (Exception e){
+            if(entityTransaction.isActive())
+                entityTransaction.rollback();
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+
     }
 }

@@ -116,4 +116,22 @@ public class SlotSaveIRepoImpl implements SlotSaveRepository {
         }
         return false;
     }
+
+    @Override
+    public String getTrainerSlot(String trainerSlot) {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        try{
+            Query query = entityManager.createNamedQuery("getTrainerSlot");
+            query.setParameter("setName", trainerSlot);
+            return (String)query.getSingleResult();
+        }catch (Exception e){
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+            entityManager.close();
+            return null;
+        }
+    }
 }

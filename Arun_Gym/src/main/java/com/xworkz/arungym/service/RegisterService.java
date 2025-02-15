@@ -3,6 +3,7 @@ package com.xworkz.arungym.service;
 import com.xworkz.arungym.dto.RegisterDTO;
 import com.xworkz.arungym.entity.RegisterEntity;
 
+import java.util.List;
 import java.util.Map;
 
 public interface RegisterService {
@@ -19,6 +20,12 @@ public interface RegisterService {
     RegisterEntity userLogin(String email, String password);
 
     void timeScheduler();
+
+    List<RegisterEntity> getAllDetails();
+
+    List<RegisterEntity> getCustomrtDetailsWithTrainer();
+
+    RegisterEntity getDatabyIdToAssigntrainer(int id, String trainer);
 
 
 }

@@ -19,4 +19,6 @@ public interface SlotSaveRepository {
 
     boolean delete(int id);
 
+    String getTrainerSlot(String trainerSlot);
+
 }

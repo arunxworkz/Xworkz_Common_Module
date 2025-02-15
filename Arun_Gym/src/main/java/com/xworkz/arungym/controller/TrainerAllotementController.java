@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,14 +98,15 @@ public class TrainerAllotementController {
     }
 
     @GetMapping("/remove/{id}")
-    public String deleteTrainer(@PathVariable("id") int id, Model model){
+    public RedirectView deleteTrainer(@PathVariable("id") int id, Model model, HttpServletRequest req){
         log.info("Id is: "+id);
+
         if(sloatSaveService.deleteTrsiner(id)){
             List<TrainerTimeAllotmentEntity> trainerTimeAllotmentEntities = sloatSaveService.getDetails();
             model.addAttribute("trainerTimeAllotmentEntities", trainerTimeAllotmentEntities);
-            return "TrainerDetails";
+            return new RedirectView(req.getContextPath()+"/viewDetails");
         }
-        return  "TrainerDetails";
+        return new RedirectView(req.getContextPath()+"/viewDetails");
     }
 
 

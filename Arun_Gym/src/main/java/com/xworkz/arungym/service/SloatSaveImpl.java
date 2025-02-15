@@ -103,4 +103,16 @@ public class SloatSaveImpl implements SloatSaveService {
         return false;
     }
 
+    @Override
+    public String getTrainerSlot(String trainerSlot) {
+
+
+        String timeRange = slotSaveRepository.getTrainerSlot(trainerSlot);
+        if(timeRange !=null){
+            return timeRange;
+        }
+        return null;
+    }
+
+
 }

@@ -86,6 +86,7 @@
                                 Update
                             </a>
                         </li>
+
                         <li>
                             <a href="AddSlots.jsp" class="nav-link link-body-emphasis">
                                 <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
@@ -98,21 +99,21 @@
                                  Trainer Allotment
                             </a>
                         </li>
+
+                        <li>
+                            <a href = "noTrainer" class="nav-link link-body-emphasis">NoTrainer</a>
+                        </li>
+
+                        <li>
+                            <a href = "customerTrainer" class="nav-link link-body-emphasis">Customer With Trainer</a>
+                        </li>
                     </ul>
-                    <hr>
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
                             <strong>mdo</strong>
                         </a>
-                        <ul class="dropdown-menu text-small shadow">
-                            <li><a class="dropdown-item" href="#">New project...</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Sign out</a></li>
-                        </ul>
                     </div>
                 </div>
             </nav>

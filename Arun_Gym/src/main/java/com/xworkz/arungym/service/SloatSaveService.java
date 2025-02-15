@@ -23,4 +23,6 @@ public interface SloatSaveService {
 
     boolean deleteTrsiner(int id);
 
+    String getTrainerSlot(String trainerSlot);
+
 }

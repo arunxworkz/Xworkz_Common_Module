@@ -4,9 +4,6 @@ import com.xworkz.arungym.dto.RegisterDTO;
 import com.xworkz.arungym.entity.RegisterEntity;
 import com.xworkz.arungym.repository.RegisterRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,8 +14,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 @Service
@@ -198,5 +195,38 @@ public class RegisterServiceImpl implements RegisterService{
     public void timeScheduler() {
             log.info("This is schedulermethdo");
         registerRepository.timeSchedulre();
+    }
+
+    @Override
+    public List<RegisterEntity> getAllDetails() {
+
+        if((registerRepository.getAllDetails()!=null)){
+            return registerRepository.getAllDetails();
+        }
+
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<RegisterEntity> getCustomrtDetailsWithTrainer() {
+
+        if((registerRepository.getCustomrtDetailsWithTrainer()!=null)){
+            return registerRepository.getCustomrtDetailsWithTrainer();
+        }
+
+
+        return Collections.emptyList();
+    }
+
+    @Override
+    public RegisterEntity getDatabyIdToAssigntrainer(int id, String trainer) {
+
+        RegisterEntity registerEntity = registerRepository.getDataById(id);
+        if(registerEntity!=null){
+            registerEntity.setTrainername(trainer);
+            registerRepository.updateEntity(registerEntity);
+            return registerEntity;
+        }
+        return null;
     }
 }

@@ -1,4 +1,5 @@
 package com.xworkz.arungym.RestController;
+import com.xworkz.arungym.entity.TrainerTimeAllotmentEntity;
 import com.xworkz.arungym.service.RegisterService;
 import com.xworkz.arungym.service.SloatSaveService;
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +67,19 @@ public class AjaxController {
         map.put("minutes", minutes);
         model.addAttribute("timeDuration", formatTiming);
         return formatTiming;
+    }
+
+    @GetMapping(value = "/slot/{trainerSlot}")
+    public String getSlot(@PathVariable String trainerSlot, Model model){
+        log.info("NAme is: "+trainerSlot);
+        String timeRange = sloatSave.getTrainerSlot(trainerSlot);
+        if(timeRange!=null){
+            model.addAttribute("slot", timeRange);
+            System.out.println("The time is: "+timeRange);
+            return timeRange;
+        }
+
+        return null;
     }
 
 

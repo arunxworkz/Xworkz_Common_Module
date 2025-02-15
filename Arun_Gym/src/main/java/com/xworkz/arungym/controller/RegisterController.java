@@ -22,7 +22,7 @@ import java.util.List;
 public class RegisterController {
 
 //    private List<AmmonutPakcages> packageList = new ArrayList<>(Arrays.asList(AmmonutPakcages.values()));
-    private List<TrainerNAmes> trainerNAmes = new ArrayList<>(Arrays.asList(TrainerNAmes.values()));
+//    private List<TrainerNAmes> trainerNAmes = new ArrayList<>(Arrays.asList(TrainerNAmes.values()));
 
     @Autowired
     private RegisterService registerService;
@@ -33,13 +33,11 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String register(Model model){
-        model.addAttribute("trainerName", trainerNAmes);
         return "Register";
     }
 
     @PostMapping("/registering")
     public String onSave(RegisterDTO dto, HttpSession session){
-        session.setAttribute("trainerName", trainerNAmes);
         if(dto != null){
             registerService.onSave(dto);
             session.getAttribute("AdminName");
