@@ -1,8 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import TypingAnimation from './TypingAnimation';
+import { useNavigate } from 'react-router-dom';
+
 
 const Hero: React.FC = () => {
+
+  const navigate = useNavigate();
+
+  const handleStratPlanning = ()=>{
+    navigate('/signup')
+  }
+  
   return (
     <section className="relative mt-24 mb-16 px-4 pt-8 md:mt-28 md:pt-12 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-radial from-purple-100/30 via-transparent to-transparent"></div>
@@ -27,6 +36,7 @@ const Hero: React.FC = () => {
               className="rounded-full bg-gradient-to-r from-secondary-500 to-rose-500 px-8 py-3 text-lg font-medium text-white shadow-lg transition-all hover:shadow-xl hover:from-secondary-600 hover:to-rose-600"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={handleStratPlanning}
             >
               Start Planning
             </motion.button>

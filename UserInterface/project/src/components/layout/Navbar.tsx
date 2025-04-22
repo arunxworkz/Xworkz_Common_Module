@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CalendarDays } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
+      setScrolled(window.scrollY > 10);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [scrolled]);
+  }, []);
 
   return (
     <motion.nav
@@ -28,21 +27,27 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
-          <motion.button
-            className="rounded-full bg-gradient-to-r from-primary-600 to-purple-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all hover:shadow-xl"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Sign Up
-          </motion.button>
+          {location.pathname !== '/signup' && (
+            <Link to="/signup">
+              <motion.button
+                className="rounded-full bg-gradient-to-r from-primary-600 to-purple-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all hover:shadow-xl"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Sign Up
+              </motion.button>
+            </Link>
+          )}
         </div>
 
-        <motion.div 
+        <motion.div
           className="flex items-center"
           whileHover={{ scale: 1.05 }}
         >
           <CalendarDays className="h-8 w-8 text-secondary-500" />
-          <span className="ml-2 text-xl font-bold bg-gradient-to-r from-primary-700 to-purple-700 bg-clip-text text-transparent">FamilyTime</span>
+          <span className="ml-2 text-xl font-bold bg-gradient-to-r from-primary-700 to-purple-700 bg-clip-text text-transparent">
+            FamilyTime
+          </span>
         </motion.div>
       </div>
     </motion.nav>

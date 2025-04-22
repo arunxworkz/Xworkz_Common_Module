@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
+import Signup from './components/home/Signup';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'; 
+
 
 function App() {
   // Implement smooth scrolling
@@ -12,9 +15,14 @@ function App() {
   }, []);
 
   return (
-    <Layout>
-      <Home />
-    </Layout>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element = {<Home />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>  
+      </Layout>
+    </Router>  
   );
 }
 
