@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-FamilyTimeApplication<FamilyTime>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.belavadi.FamilyTime.FamilyTimeApplication",
+            "projectName": "FamilyTime",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
