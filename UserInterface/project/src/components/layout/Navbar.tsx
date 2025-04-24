@@ -27,7 +27,8 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
-          {location.pathname !== '/signup' && (
+          {/* SignUp Button */}
+          {location.pathname !== '/signup' && location.pathname !== '/signIn' && (
             <Link to="/signup">
               <motion.button
                 className="rounded-full bg-gradient-to-r from-primary-600 to-purple-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all hover:shadow-xl"
@@ -35,6 +36,19 @@ const Navbar: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 Sign Up
+              </motion.button>
+            </Link>
+          )}
+
+          {/* SignIn Button */}
+          {location.pathname !== '/signIn' && (
+            <Link to="/signIn">
+              <motion.button
+                className="rounded-full bg-gradient-to-r from-primary-600 to-purple-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all hover:shadow-xl"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Sign In
               </motion.button>
             </Link>
           )}

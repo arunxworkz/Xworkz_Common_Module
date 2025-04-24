@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import TypingAnimation from './TypingAnimation';
 import { useNavigate } from 'react-router-dom';
 
-
 const Hero: React.FC = () => {
-
+  const [currentImage, setCurrentImage] = useState<string>('');
   const navigate = useNavigate();
 
-  const handleStratPlanning = ()=>{
-    navigate('/signup')
-  }
-  
+  const handleStratPlanning = () => {
+    navigate('/signup');
+  };
+
+  const handleWordChange = (image: string) => {
+    setCurrentImage(image); // Update the current image when word changes
+  };
+
   return (
     <section className="relative mt-24 mb-16 px-4 pt-8 md:mt-28 md:pt-12 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-radial from-purple-100/30 via-transparent to-transparent"></div>
@@ -28,9 +31,21 @@ const Hero: React.FC = () => {
           <p className="mb-8 text-lg text-gray-600 md:text-xl">
             Organize, celebrate, and remember all your family's important occasions
           </p>
-          
-          <TypingAnimation />
-          
+
+          <TypingAnimation onWordChange={handleWordChange} />
+
+          {/* Sliding image effect */}
+          {currentImage && (
+            <motion.div
+              className="mt-8 overflow-hidden"
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1 }}
+            >
+              <img src={currentImage} alt="Occasion" className="w-full h-auto rounded-xl shadow-lg" />
+            </motion.div>
+          )}
+
           <div className="mt-4">
             <motion.button
               className="rounded-full bg-gradient-to-r from-secondary-500 to-rose-500 px-8 py-3 text-lg font-medium text-white shadow-lg transition-all hover:shadow-xl hover:from-secondary-600 hover:to-rose-600"

@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   email: Yup.string()
@@ -38,7 +39,7 @@ const Signup: React.FC = () => {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      const response = await axios.post("http://localhost:8081/api/auth/signUp", data);
+      const response = await axios.post("http://localhost:8080/api/auth/signUp", data);
       alert('SignUp Successful');
       reset();
     } catch (error: any) {
