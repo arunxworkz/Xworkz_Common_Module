@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.belavadi.FamilyTime.DTO.SignInDTO;
@@ -17,6 +19,9 @@ public class ServiceClassImpl implements ServiceInterface{
 
     @Autowired
     private RepositoryInterface repoInterface;
+
+    @Autowired
+    private JavaMailSender sender;
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     @Override
@@ -46,10 +51,14 @@ public class ServiceClassImpl implements ServiceInterface{
     @Override
     public String getOtp(String email) {
         
-        String otp;
         if(repoInterface.findByEmail(email) != null){
-                otp = new DecimalFormat("000000").format(new Random().nextInt(999999));
-                return otp;   
+            String otp = new DecimalFormat("000000").format(new Random().nextInt(999999));
+            SimpleMailMessage mailOtp = new SimpleMailMessage();
+            mailOtp.setTo(email);
+            mailOtp.setSubject("You OTP for Reset password");
+            mailOtp.setText("Otp is: "+otp);
+            sender.send(mailOtp);
+            return otp;
         }
         return null;
     }   
