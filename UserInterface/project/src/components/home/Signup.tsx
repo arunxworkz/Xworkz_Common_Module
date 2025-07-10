@@ -4,10 +4,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-
+import { useNavigate, Link } from 'react-router-dom'; // ✅ Import these
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
+  name: Yup.string().required('Name is required')
+        .matches(/^(?!\d+$)[a-zA-Z0-9 ]+$/, 'Only alphabets or alphanumeric values are allowed'),
   email: Yup.string()
     .email('Enter a valid Gmail address')
     .matches(/@gmail\.com$/, 'Only Gmail addresses are allowed')
@@ -16,8 +17,13 @@ const validationSchema = Yup.object().shape({
     .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
     .required('Phone number is required'),
   password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+  .required('Password is required')
+  .min(8, 'Password must be at least 8 characters')
+  .matches(/[a-z]/, 'Must contain at least one lowercase letter')
+  .matches(/[A-Z]/, 'Must contain at least one uppercase letter')
+  .matches(/[0-9]/, 'Must contain at least one number')
+  .matches(/[@$!%*?&#]/, 'Must contain at least one special character')
+  .matches(/^\S*$/, 'No whitespace allowed'),
 });
 
 type FormValues = {
@@ -37,18 +43,25 @@ const Signup: React.FC = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  const navigate = useNavigate(); // ✅ Add useNavigate hook
+
   const onSubmit = async (data: FormValues) => {
     try {
       const response = await axios.post("http://localhost:8080/api/auth/signUp", data);
-      alert('SignUp Successful');
+      alert("SignUp successful");
       reset();
+      navigate('/'); // ✅ Redirect to home
     } catch (error: any) {
-      alert("Error in SigningUp");
+      if (error.response && error.response.status === 409) {
+        alert(error.response.data);
+      } else {
+        alert("Error in SigningUp");
+      }
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-white to-rose-100 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-rose-100 p-6">
       <motion.div
         className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8"
         initial={{ scale: 0.9, opacity: 0 }}
@@ -120,6 +133,14 @@ const Signup: React.FC = () => {
             Sign Up
           </motion.button>
         </form>
+
+        {/* ✅ Add login link below the form */}
+        <p className="text-center text-sm text-gray-600 mt-4">
+          Already have an account?{' '}
+          <Link to="/signIn" className="text-purple-600 hover:underline">
+            Login
+          </Link>
+        </p>
       </motion.div>
     </div>
   );

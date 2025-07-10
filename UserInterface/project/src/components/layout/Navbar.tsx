@@ -25,9 +25,9 @@ const Navbar: React.FC = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="container mx-auto flex items-center justify-between">
-        <div className="flex items-center">
-          {/* SignUp Button */}
+      <div className="container mx-auto flex items-center justify-between bg-gradient-to-br from-green-300 via-white to-green-50">
+        <div className="flex items-center space-x-4">
+          {/* Sign Up Button - hide on /signup and /signIn */}
           {location.pathname !== '/signup' && location.pathname !== '/signIn' && (
             <Link to="/signup">
               <motion.button
@@ -40,8 +40,8 @@ const Navbar: React.FC = () => {
             </Link>
           )}
 
-          {/* SignIn Button */}
-          {location.pathname !== '/signIn' && (
+          {/* Sign In Button - hide on /signup and /signIn */}
+          {location.pathname !== '/signIn' && location.pathname !== '/signup' && (
             <Link to="/signIn">
               <motion.button
                 className="rounded-full bg-gradient-to-r from-primary-600 to-purple-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all hover:shadow-xl"
@@ -54,10 +54,7 @@ const Navbar: React.FC = () => {
           )}
         </div>
 
-        <motion.div
-          className="flex items-center"
-          whileHover={{ scale: 1.05 }}
-        >
+        <motion.div className="flex items-center" whileHover={{ scale: 1.05 }}>
           <CalendarDays className="h-8 w-8 text-secondary-500" />
           <span className="ml-2 text-xl font-bold bg-gradient-to-r from-primary-700 to-purple-700 bg-clip-text text-transparent">
             FamilyTime

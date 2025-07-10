@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, FormEvent } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
-const SignIn = () => {
+const SignIn = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
     try {
       const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
@@ -17,14 +19,18 @@ const SignIn = () => {
       });
 
       if (response.ok) {
-        const data = await response.text(); // or .json() if you return JSON
-        alert(`Success: ${data}`);
+        localStorage.setItem('Success', 'true');
+        setIsLoggedIn(true); // ✅ Trigger route check
+        navigate('/dashboard');
+      } else if (response.status === 401) {
+        const data = await response.text();
+        setErrorMessage(data);
       } else {
-        alert('Invalid credentials!');
+        setErrorMessage('Something went wrong. Please try again.');
       }
     } catch (error) {
       console.error('Login error:', error);
-      alert('Something went wrong. Please try again.');
+      setErrorMessage('Server error. Please try again later.');
     }
   };
 
@@ -65,6 +71,10 @@ const SignIn = () => {
             </div>
           </div>
 
+          {errorMessage && (
+            <div className="text-red-500 text-sm text-center">{errorMessage}</div>
+          )}
+
           <button
             type="submit"
             className="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition"
@@ -73,9 +83,8 @@ const SignIn = () => {
           </button>
         </form>
 
-
         <div className="mt-4 text-sm text-blue-600 hover:underline text-center">
-            <Link to="/otpGeneration">Forgot Password?</Link>
+          <Link to="/otpGeneration">Forgot Password?</Link>
         </div>
       </div>
     </div>

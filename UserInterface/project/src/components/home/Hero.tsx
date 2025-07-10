@@ -16,7 +16,8 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative mt-24 mb-16 px-4 pt-8 md:mt-28 md:pt-12 overflow-hidden">
+    <section className="relative mt-24 mb-16 px-4 pt-8 md:mt-28 md:pt-12 overflow-hidden bg-gradient-to-br from-green-300 via-white to-green-50">
+
       <div className="absolute inset-0 bg-gradient-radial from-purple-100/30 via-transparent to-transparent"></div>
       <div className="container mx-auto relative">
         <motion.div
