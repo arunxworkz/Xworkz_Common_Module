@@ -66,7 +66,7 @@ const Signup: React.FC = () => {
         className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.2 }}
       >
         <h2 className="text-3xl font-bold text-center text-purple-700 mb-4">
           Create Your Account

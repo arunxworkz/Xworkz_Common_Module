@@ -11,10 +11,12 @@ const Navbar: React.FC = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const showAuthButtons = !['/signup', '/signIn', '/dashboard'].includes(location.pathname);
+  const showProfilePic = location.pathname === '/dashboard';
 
   return (
     <motion.nav
@@ -27,30 +29,19 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto flex items-center justify-between bg-gradient-to-br from-green-300 via-white to-green-50">
         <div className="flex items-center space-x-4">
-          {/* Sign Up Button - hide on /signup and /signIn */}
-          {location.pathname !== '/signup' && location.pathname !== '/signIn' && (
-            <Link to="/signup">
-              <motion.button
-                className="rounded-full bg-gradient-to-r from-primary-600 to-purple-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all hover:shadow-xl"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Sign Up
-              </motion.button>
-            </Link>
-          )}
-
-          {/* Sign In Button - hide on /signup and /signIn */}
-          {location.pathname !== '/signIn' && location.pathname !== '/signup' && (
-            <Link to="/signIn">
-              <motion.button
-                className="rounded-full bg-gradient-to-r from-primary-600 to-purple-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all hover:shadow-xl"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Sign In
-              </motion.button>
-            </Link>
+          {showAuthButtons && (
+            <>
+              <Link to="/signup">
+                <motion.button className="rounded-full bg-gradient-to-r from-primary-600 to-purple-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all hover:shadow-xl" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  Sign Up
+                </motion.button>
+              </Link>
+              <Link to="/signIn">
+                <motion.button className="rounded-full bg-gradient-to-r from-primary-600 to-purple-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all hover:shadow-xl" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  Sign In
+                </motion.button>
+              </Link>
+            </>
           )}
         </div>
 
@@ -60,9 +51,18 @@ const Navbar: React.FC = () => {
             FamilyTime
           </span>
         </motion.div>
+
+        {showProfilePic && (
+          <img
+            src="/default-profile.png" // Can be passed dynamically via props or context later
+            alt="Profile"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        )}
       </div>
     </motion.nav>
   );
 };
+
 
 export default Navbar;
