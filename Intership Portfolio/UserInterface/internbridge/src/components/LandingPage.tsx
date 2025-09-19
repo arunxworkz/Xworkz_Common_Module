@@ -1,5 +1,6 @@
 import React from 'react'
 import { ArrowRight, Users, Target, Award, Calendar } from 'lucide-react'
+import { Link } from "react-router-dom"
 
 function LandingPage() {
   return (
@@ -75,10 +76,12 @@ function LandingPage() {
 
               {/* CTA */}
               <div className="space-y-4">
-                <button className="group bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-teal-600 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2">
-                  <span>Sign Up</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
+                <Link to="/signup">
+                  <button className="group bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-teal-600 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2">
+                    <span>Sign Up</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </Link>
                 <p className="text-sm text-gray-500">
                   Join 500+ companies already transforming their internship programs
                 </p>
