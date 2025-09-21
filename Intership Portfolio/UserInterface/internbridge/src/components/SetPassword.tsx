@@ -1,28 +1,45 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function SetPassword() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { email } = location.state || {};
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string | null>(null);
+
+  // Get email from localStorage when component mounts
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (!storedEmail) {
+      alert("Email not found. Please verify first.");
+      navigate("/verify");
+    } else {
+      setEmail(storedEmail);
+    }
+  }, [navigate]);
 
   const handlePasswordSet = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email) return; // safety check
+
     try {
-      const response = await axios.post("http://localhost:8080/auth/setPassword", null, {
-        params: { email, password }
-      });
+      const response = await axios.post(
+        "http://localhost:8080/auth/setPassword",
+        { email, password }, // send email + password
+        { headers: { "Content-Type": "application/json" } }
+      );
 
       if (response.data.includes("Password set successfully")) {
         alert("Password set successfully! You can now login.");
-        navigate("/"); // redirect to homepage or login
+        localStorage.removeItem("email"); // clear email after use
+        navigate("/signIn"); // redirect to login
       }
     } catch (error: any) {
       alert(error.response?.data || "Error setting password");
     }
   };
+
+  if (!email) return null; // render nothing if email not loaded yet
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

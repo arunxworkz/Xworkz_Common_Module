@@ -1,40 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Mail, Users, Trophy, ArrowRight, Building2, Target } from "lucide-react";
+import React, { useState } from "react";
+import { Mail, ArrowRight, Building2, Target, Users, ShieldCheck, CalendarCheck } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-// Counter animation hook
-const useCounter = (end: number, duration: number = 2000, delay: number = 0) => {
-  const [count, setCount] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setHasStarted(true), delay);
-    return () => clearTimeout(timer);
-  }, [delay]);
-
-  useEffect(() => {
-    if (!hasStarted) return;
-    let startTime: number;
-    let animationFrame: number;
-
-    const animate = (currentTime: number) => {
-      if (!startTime) startTime = currentTime;
-      const progress = Math.min((currentTime - startTime) / duration, 1);
-      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      setCount(Math.floor(easeOutQuart * end));
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      }
-    };
-
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [end, duration, hasStarted]);
-
-  return count;
-};
 
 function SignUp() {
   const navigate = useNavigate();
@@ -42,12 +9,7 @@ function SignUp() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Animated stats
-  const successfulHires = useCounter(5000, 2000, 200);
-  const partnerCompanies = useCounter(200, 2000, 400);
-  const successRate = useCounter(95, 2000, 600);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.email) return;
 
@@ -55,138 +17,125 @@ function SignUp() {
     setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:8080/signUp", formData);
+      const response = await axios.post("http://localhost:8080/auth/signUp", formData);
 
-      if (response.data === "OTP_SENT") {
-        alert("Verification code sent to email!");
+      if (response.data.includes("Verification code is sent") || response.data === "OTP_SENT") {
+        alert("Verification code sent to your email!");
         navigate("/verify", { state: { email: formData.email } });
+      } else if (response.data === "EMPTY_EMAIL") {
+        setMessage("Email cannot be empty");
+      } else if (response.data === "INVALID_EMAIL") {
+        setMessage("Please enter a valid business email address");
       } else {
-        setMessage(response.data);
+        setMessage("Signup failed. Please try again.");
       }
     } catch (error: any) {
-      setMessage(error.response?.data || "Signup failed. Try again.");
-    } finally {
-      setLoading(false);
+      console.error("Signup error:", error);
+      if (error.response && error.response.data) {
+        setMessage(error.response.data);
+      } else {
+        setMessage("Signup failed. Try again.");
+      }
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              TalentBridge HR
-            </span>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
+      {/* Background with InternBridge logo */}
+      <div className="absolute inset-0">
+        <img 
+          src="/InternBridge_Digital_Assets.jpg" 
+          alt="InternBridge Background" 
+          className="absolute top-0 right-0 w-1/2 h-auto opacity-10 transform rotate-12"
+        />
+        <img 
+          src="/InternBridge_Digital_Assets.jpg" 
+          alt="InternBridge Digital Assets" 
+          className="absolute bottom-0 left-0 w-2/3 h-auto opacity-5"
+        />
+      </div>
+
+      <header className="relative z-10 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+            <img 
+              src="/InternBridge_Digital_Assets.jpg" 
+              alt="InternBridge Logo" 
+              className="w-8 h-8 object-contain rounded-md"
+            />
           </div>
+          <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            InternBridge
+          </span>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] p-4">
+      <div className="relative z-10 flex items-center justify-center min-h-[calc(100vh-80px)] p-4">
         <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side */}
-          <div className="space-y-8">
-            <h1 className="text-5xl font-bold text-gray-800 leading-tight">
-              Find Exceptional
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
-                Intern Talent
-              </span>
-              for Your Team
+
+          {/* Left Side - Titles */}
+          <div>
+            <h1 className="text-4xl font-extrabold text-gray-900 leading-tight mb-4">
+              Build the Future with <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Intern Talent</span>
             </h1>
-            <p className="text-lg text-gray-600">
-              Connect with pre-vetted, highly motivated interns who are ready to
-              contribute from day one. Build your future workforce with
-              candidates who've proven their skills.
+            <p className="text-gray-600 mb-8">
+              Unlock a seamless way to recruit, train, and retain the next generation of professionals
+              through structured and meaningful internship experiences.
             </p>
 
-            {/* Features */}
             <div className="space-y-4">
-              <div className="flex items-center space-x-4">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Target className="w-5 h-5 text-blue-600" />
+              <div className="flex items-start space-x-3">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-2 rounded-lg border border-blue-100">
+                  <Users className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800">
-                    Pre-Screened Candidates
-                  </h3>
-                  <p className="text-gray-600">
-                    Access interns who've completed skill assessments
-                  </p>
+                  <h3 className="font-semibold text-gray-800">Smart Recruitment</h3>
+                  <p className="text-sm text-gray-600">Find the right interns faster with data-driven selection</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Users className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">
-                    Diverse Talent Pool
-                  </h3>
-                  <p className="text-gray-600">
-                    Candidates from top universities and disciplines
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Trophy className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">
-                    Proven Track Record
-                  </h3>
-                  <p className="text-gray-600">
-                    Our interns consistently exceed expectations
-                  </p>
-                </div>
-              </div>
-            </div>
 
-            {/* Animated Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-gray-200">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-800">
-                  {successfulHires}+
+              <div className="flex items-start space-x-3">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-2 rounded-lg border border-purple-100">
+                  <Target className="w-6 h-6 text-purple-600" />
                 </div>
-                <div className="text-sm text-gray-600">Successful Hires</div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Skill Development</h3>
+                  <p className="text-sm text-gray-600">Provide structured training for real-world growth</p>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-800">
-                  {partnerCompanies}+
+
+              <div className="flex items-start space-x-3">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-2 rounded-lg border border-green-100">
+                  <ShieldCheck className="w-6 h-6 text-green-600" />
                 </div>
-                <div className="text-sm text-gray-600">Partner Companies</div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Performance Insights</h3>
+                  <p className="text-sm text-gray-600">Track progress with measurable outcomes</p>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-800">
-                  {successRate}%
+
+              <div className="flex items-start space-x-3">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-2 rounded-lg border border-indigo-100">
+                  <CalendarCheck className="w-6 h-6 text-indigo-600" />
                 </div>
-                <div className="text-sm text-gray-600">Retention Rate</div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Future Workforce</h3>
+                  <p className="text-sm text-gray-600">Convert interns into long-term talent</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right Side - Signup Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          {/* Right Side - Form */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-gray-100">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Join Our HR Network
-              </h2>
-              <p className="text-gray-600">
-                Get access to top intern candidates today
-              </p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Join Our HR Network</h2>
+              <p className="text-gray-600">Get access to top intern candidates today</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                   Corporate Email Address
                 </label>
                 <div className="relative">
@@ -196,30 +145,27 @@ function SignUp() {
                     id="email"
                     name="email"
                     value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, [e.target.name]: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
                     required
-                    placeholder="hr@yourcompany.com"
+                    placeholder="hr@company.com"
                     className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
 
-              {message && (
-                <p className="text-sm text-red-600 text-center">{message}</p>
-              )}
+              {message && <p className="text-sm text-red-600 text-center">{message}</p>}
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition flex items-center justify-center space-x-2 disabled:opacity-50"
               >
                 <span>{loading ? "Sending OTP..." : "Access Talent Pool"}</span>
-                <ArrowRight className="w-5 h-5" />
+                {!loading && <ArrowRight className="w-5 h-5" />}
               </button>
             </form>
           </div>
+
         </div>
       </div>
     </div>

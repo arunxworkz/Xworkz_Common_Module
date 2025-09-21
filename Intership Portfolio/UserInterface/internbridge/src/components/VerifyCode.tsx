@@ -8,16 +8,20 @@ function VerifyCode() {
   const { email } = location.state || {};
   const [code, setCode] = useState("");
 
+  // console.log(email, code);
+
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/auth/verifyCode", null, {
-        params: { email, code }
-      });
+      const response = await axios.post("http://localhost:8080/auth/verifyCode", 
+        { email, code },
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-      if (response.data.includes("Email verified")) {
+      if (response.status === 200) {
         alert("Email verified successfully!");
-        navigate("/set-password", { state: { email } });
+        localStorage.setItem("email", email);
+        navigate("/set-password");
       }
     } catch (error: any) {
       alert(error.response?.data || "Invalid code. Please try again.");
