@@ -2,19 +2,24 @@ const authService = require('../services/authService');
 
 const signUp = async (req, res) => {
     const { email } = req.body;
+    console.log(email)
     const result = await authService.signUp(email);
 
     switch (result.status) {
-        case 'OTP_SENT':
-            res.status(200).send('Verification code is sent to your email');
-            break;
         case 'EMPTY_EMAIL':
             res.status(400).send('Email cannot be empty');
             break;
         case 'EMAIL_EXISTS':
-            res.status(400).send('Email already Exists')
-        case 'INVALID_EMAIL':
-            res.status(400).send('Please enter a valid business Email ID');
+            res.status(200).send('Email already Exists');
+            break;
+        case 'COMPANY_EXISTS':
+            res.status(200).json({ status: 'COMPANY_EXISTS', message: 'Company exists. Ask admin for access.' });
+            break;
+        case 'NEW_COMPANY':
+            res.status(200).json({ status: 'NEW_COMPANY', message: 'New company signup. Verify email and create company profile.' });
+            break;
+        case 'ERROR':
+            res.status(500).send('SignUp failed. Please try again.');
             break;
         default:
             res.status(500).send('SignUP Failed');
@@ -90,6 +95,21 @@ const signin = async(req, res) => {
     }
 }
 
+const resetPassword = async(req, res)=>{
+    const { email, password, confirmPassword } = req.body;
+    const result = authService.resetPassword(email, password, confirmPassword);
+    switch(result){
+        case 'PASSWORD_SET':
+            res.status(200).json({message : "Password set successfully"});
+            break;
+        case 'USER_NOT_EXISTS':
+            res.status(404).json({message: "USer not found. Please SignUp"});
+            break;
+        case 'PASSWORD_MISSMATCH':
+            res.status(400).json({message: "Password dosen' t match"})
+        default:
+            res.status(500).send("Server Error");
+    }
+}
 
-
-module.exports = { signUp, verifyCode, setPassword, demo, signin };
+module.exports = { signUp, verifyCode, setPassword, demo, signin, resetPassword };

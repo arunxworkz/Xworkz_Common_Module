@@ -9,6 +9,8 @@ import VerifyCode from './components/VerifyCode'
 import SetPassword from './components/SetPassword'
 import Demo from './components/Demo'
 import SignIn from './components/Signin'
+import ForgotPassword from './components/ForgotPassword'
+import CompanyProfile from './components/CompanyProfile'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -20,7 +22,8 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/set-password" element={<SetPassword />} />
             <Route path="/demo" element={<Demo />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/forgot-password" element={<ForgotPasseord />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/company-profile" element={<CompanyProfile />} />
         </Routes>
     </BrowserRouter>
   </StrictMode>

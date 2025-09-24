@@ -1,3 +1,4 @@
+const { parse } = require('dotenv');
 const pool = require('../models/hrEmailModel');
 const sendMail = require('../utils/mailer');
 
@@ -13,38 +14,91 @@ const generateCode = () => {
 };
 
 const signUp = async (email) => {
+
+    console.log(email);
+
     if (!email) return { status: 'EMPTY_EMAIL' };
 
+    
     const code = generateCode();
+    console.log(code);
 
     // Check email validity (you can implement MX lookup if needed)
 
-    try {
-        const [rows] = await pool.query('SELECT * FROM hr_email_entity WHERE hr_email_id = ?', [email]);
-        if (rows.length > 0) return { status: 'EMAIL_EXISTS' };
+    try{
 
-        await pool.query('INSERT INTO hr_email_entity (hr_email_id, code, is_Verified) VALUES (?, ?, ?)', [email, code, 0]);
+        console.log("Emial form try block: ", email);
 
-        await sendMail(email, 'Email Verification Code', `Your verification code is: ${code}`);
-        return { status: 'OTP_SENT' };
-    } catch (err) {
-        console.error(err);
-        return { status: 'ERROR' };
+        const [existingUser] = await pool.query("SELECT * from user_table WHERE business_email_id = ?", [email]);
+
+        console.log("Existing user details: ", existingUser);
+
+        if(existingUser.length > 0) return { status : "EMAIL_EXISTS" };
+
+        const domainPart = email.split("@")[1];
+
+        console.log("Domain Part: ", domainPart);
+
+        // const parsed = parse(domainPart);
+
+        // console.log("Parsed: ", parsed);
+
+        // const companyDomain = `${parsed.domain}.${parsed.publicSuffix}`;
+
+        // console.log("Compnay Domain: ", companyDomain);
+
+        const [compnayRows] = await pool.query("SELECT * FROM company_profile WHERE company_domain = ?", [domainPart]);
+
+        console.log("Company rows: ", compnayRows);
+
+        if(compnayRows.length > 0){
+            const companyId = compnayRows[0].id;
+
+            console.log("Compnay id: ", companyId);
+
+            console.log("Compnay Id: ", companyId);
+
+            await pool.query("INSERT INTO user_table (business_email_id, code, is_verified, company_id, role) values(?, ?, ?, ?, ?)",
+                [email, code, 0, companyId, null]
+            );
+
+            await sendMail(email, "Email verification code", `${code}`);
+
+            return {status : 'COMPANY_EXISTS', message: 'Ask admin to Access' };
+        }
+        else{
+
+            console.log("Email from Else  block: ", email);
+
+            await pool.query("INSERT INTO user_table (business_email_id, code, is_verified, role, status) values (?, ?, ?, ?, ?)", 
+                [email, code, 0, 'ADMIN', 'APPROVED']
+            );
+
+
+            await sendMail(email, 'Email Verification Code', `Your code is: ${code}`);
+
+            return { status : 'NEW_COMPANY', message : "Verify the email and create the company profile"};
+            
+        }
+    }catch (err) {
+    console.error("Signup service error:", err);
+    return { status: 'ERROR', message: 'Signup failed due to server error.' };
     }
+
 };
 
 const verifyCode = async (email, code) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM hr_email_entity WHERE hr_email_id = ?', [email]);
+        const [rows] = await pool.query('SELECT * FROM user_table WHERE business_email_id = ?', [email]);
         console.log(rows)
         if (rows.length === 0) return { status: 'INVALID_EMAIL' };
 
         const user = rows[0];
         if (user.code === code) {
-            await pool.query('UPDATE hr_email_entity SET code = NULL, is_Verified = 1 WHERE hr_email_id = ?', [email]);
+            await pool.query('UPDATE user_table SET code = NULL, is_Verified = 1 WHERE business_email_id = ?', [email]);
             return { status: 'SUCCESS' };
         } else {
-            await pool.query('UPDATE hr_email_entity SET code = NULL WHERE hr_email_id = ?', [email]);
+            await pool.query('UPDATE user_table SET code = NULL WHERE business_email_id = ?', [email]);
             return { status: 'INVALID_OTP' };
         }
     } catch (err) {
@@ -56,7 +110,7 @@ const verifyCode = async (email, code) => {
 const setPassword = async (email, password) => {
   try {
     const [rows] = await pool.query(
-      "SELECT * FROM hr_email_entity WHERE hr_email_id = ?",
+      "SELECT * FROM user_table WHERE business_email_id = ?",
       [email]
     );
 
@@ -68,7 +122,7 @@ const setPassword = async (email, password) => {
 
     // Update password
     await pool.query(
-      "UPDATE hr_email_entity SET password = ? WHERE hr_email_id = ?",
+      "UPDATE user_table SET password = ? WHERE business_email_id = ?",
       [password, email]
     );
     return { status: "SUCCESS" };
@@ -92,7 +146,7 @@ const giveDemo = async (fullName, businessEmail, phoneNumber, companyName, compa
 const signin = async (email, password) => {
     console.log("This is from service: ", email, password)
     try{
-        const [rows] = await pool.query("Select * from hr_email_entity where hr_email_id = ? and password = ?", [email, password]);
+        const [rows] = await pool.query("Select * from user_table where business_email_id = ? and password = ?", [email, password]);
         
         console.log(rows)
 
@@ -110,6 +164,25 @@ const signin = async (email, password) => {
     }
 }
 
+const resetPassword = async (email, password, confirmPassword) =>{
+    console.log("The details from service: ",email, password, confirmPassword)
+    if(password !== confirmPassword) {
+        return { status : "PASSWORD_MISSMATCH" };
+    }
+    try{
+        const [rows] = await pool.query("select * from user_table where business_email_id = ?", email);
 
+        if(rows.length > 0){
+            await pool.query("UPDATE user_table set password = ? where business_email_id = ?", password, email);
+            return { status : "PASSWORD_SET" }
+        }else{
+            return { status : "USER_NOT_EXISTS" }
+        }
+    }catch(error){
+        return { status : "ERROR" }
+    }
+}
 
-module.exports = { signUp, verifyCode, setPassword, giveDemo, signin };
+const compnayProfile = async (unique_company_id, company_name, company_size, company_logo, )
+
+module.exports = { signUp, verifyCode, setPassword, giveDemo, signin, resetPassword };

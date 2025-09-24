@@ -60,7 +60,7 @@ const SignIn: React.FC = () => {
         const response = await axios.post("http://localhost:8080/auth/signin", formData);
 
         if(response.status === 200){
-            navigate("/company-details");
+            navigate("/company-profile");
         }
     }catch(error : any){
         alert(error.response?.data || "Login failed. Please try again.");

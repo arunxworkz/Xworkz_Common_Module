@@ -17,27 +17,30 @@ function SignUp() {
     setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/signUp", formData);
+        const response = await axios.post("http://localhost:8080/auth/signUp", formData);
+        const { status, message } = response.data; // <-- JSON from backend
 
-      if (response.data.includes("Verification code is sent") || response.data === "OTP_SENT") {
-        alert("Verification code sent to your email!");
-        navigate("/verify", { state: { email: formData.email } });
-      } else if (response.data === "EMPTY_EMAIL") {
-        setMessage("Email cannot be empty");
-      } else if (response.data === "INVALID_EMAIL") {
-        setMessage("Please enter a valid business email address");
-      } else {
-        setMessage("Signup failed. Please try again.");
-      }
-    } catch (error: any) {
-      console.error("Signup error:", error);
-      if (error.response && error.response.data) {
-        setMessage(error.response.data);
-      } else {
-        setMessage("Signup failed. Try again.");
-      }
+        if (status === "COMPANY_EXISTS") {
+          alert(message);
+          navigate("/verify", { state: { email: formData.email, flow: "company_exists" } });
+        } else if (status === "NEW_COMPANY") {
+          alert(message);
+          navigate("/verify", { state: { email: formData.email, flow: "new_company" } });
+        } else if (status === "EMPTY_EMAIL" || status === "INVALID_EMAIL" || status === "EMAIL_EXISTS") {
+          setMessage(message);
+        } else {
+          setMessage("Signup failed. Try again.");
+        }
+      } catch (error: any) {
+        console.error("Signup error:", error);
+        if (error.response && error.response.data) {
+          setMessage(error.response.data);
+        } else {
+          setMessage("Signup failed. Try again.");
+        }
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
