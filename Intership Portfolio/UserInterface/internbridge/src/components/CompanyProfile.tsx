@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Building2, Users, MapPin, User, Globe, Linkedin, Phone, Upload, CheckCircle } from 'lucide-react';
+import  axios  from 'axios'; 
 
 interface FormData {
   companyName: string;
   companySize: string;
   companyLogo: File | null;
   companyAddress: string;
-  coAdmin: string;
+  // coAdmin: string;
   website: string;
   linkedin: string;
   telephoneNumber: string;
@@ -22,7 +23,7 @@ function App() {
     companySize: '',
     companyLogo: null,
     companyAddress: '',
-    coAdmin: '',
+    // coAdmin: '',
     website: '',
     linkedin: '',
     telephoneNumber: ''
@@ -97,14 +98,36 @@ function App() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      setIsSubmitted(true);
-      // Here you would typically send the data to your backend
-      console.log('Form submitted:', formData);
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (validateForm()) {
+    const data = new FormData();
+
+    // Append text fields
+    data.append("companyName", formData.companyName);
+    data.append("companySize", formData.companySize);
+    data.append("companyAddress", formData.companyAddress);
+    // data.append("coAdmin", formData.coAdmin);
+    data.append("website", formData.website);
+    data.append("linkedin", formData.linkedin);
+    data.append("telephoneNumber", formData.telephoneNumber);
+
+    // Append file if selected
+    if (formData.companyLogo) {
+      data.append("companyLogo", formData.companyLogo);
     }
-  };
+
+    try {
+      const response = await axios.post("http://localhost:8080/auth/company", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log("Success:", response.data);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  }
+};
 
   if (isSubmitted) {
     return (
@@ -143,7 +166,7 @@ function App() {
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-3 mb-4">
               <img 
-                src="/InternBridge_Digital_Assets copy.jpg" 
+                src="/InternBridge_Digital_Assets.jpg" 
                 alt="InternBridge Logo" 
                 className="w-12 h-12 rounded-lg object-contain bg-white/10 p-1"
               />
@@ -239,7 +262,7 @@ function App() {
                 </div>
 
                 {/* Co-Admin */}
-                <div>
+                {/* <div>
                   <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3">
                     <User className="w-5 h-5 text-teal-600" />
                     Co-Admin <span className="text-gray-400">(Optional)</span>
@@ -252,7 +275,7 @@ function App() {
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
                     placeholder="Co-admin name"
                   />
-                </div>
+                </div> */}
 
                 {/* Telephone Number */}
                 <div>

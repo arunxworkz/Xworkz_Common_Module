@@ -26,4 +26,9 @@ select * from demo_requests;
 
 alter table company_profile add column company_domain varchar(100);
 alter table company_profile drop column co_admin;
+alter table company_profile modify column company_logo LONGBLOB;
+alter table company_profile add column company_address varchar(10000);
 select * from company_profile;
+truncate company_profile; 
+
+rollback;

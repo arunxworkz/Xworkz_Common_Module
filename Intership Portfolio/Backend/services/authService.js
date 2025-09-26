@@ -1,6 +1,9 @@
 const { parse } = require('dotenv');
 const pool = require('../models/hrEmailModel');
 const sendMail = require('../utils/mailer');
+const fs = require("fs");
+const { URL } = require("url");
+
 
 const CHARACTERS = "ABCDEFGHIJKLMANOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 const CODE_LENGTH = 6;
@@ -183,6 +186,49 @@ const resetPassword = async (email, password, confirmPassword) =>{
     }
 }
 
-const compnayProfile = async (unique_company_id, company_name, company_size, company_logo, )
+const companyProfile = async (
+    companyName,
+    companySize,
+    companyLogo,
+    companyAddress,
+    website,
+    linkedin,
+    telephoneNumber
+    ) => {
+    try {
+        const id = Math.floor(Math.random() * 10000).toString();
+        const unique_company_id = companyName.slice(0, 3) + id;
 
-module.exports = { signUp, verifyCode, setPassword, giveDemo, signin, resetPassword };
+        const url = new URL(website);
+        const company_domain = url.hostname.replace(/^www\./, "");
+
+        // ✅ multer gives buffer directly
+        const imageBuffer = companyLogo ? companyLogo.buffer : null;
+
+        await pool.query(
+        `INSERT INTO company_profile 
+            (unique_company_id, company_name, company_size, company_logo, company_telephone_number, company_website, company_linkedin, admin, company_domain, company_address)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            unique_company_id,
+            companyName,
+            companySize,
+            imageBuffer,
+            telephoneNumber,
+            website,
+            linkedin,
+            1,
+            company_domain,
+            companyAddress
+        ]
+        );
+
+        return { status: "DETAILS_SAVED" };
+    } catch (err) {
+        console.error("DB Error:", err);
+        return { status: "DETAILS_NOT_SAVED" };
+    }
+};
+
+
+module.exports = { signUp, verifyCode, setPassword, giveDemo, signin, resetPassword, companyProfile };

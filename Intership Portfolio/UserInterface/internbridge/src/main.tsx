@@ -11,6 +11,7 @@ import Demo from './components/Demo'
 import SignIn from './components/Signin'
 import ForgotPassword from './components/ForgotPassword'
 import CompanyProfile from './components/CompanyProfile'
+import CompanyDetails from './CompnayDetails'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/signin" element={<SignIn />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/company-profile" element={<CompanyProfile />} />
+            <Route path="/company-details/:id" element={<CompanyDetails />} />
         </Routes>
     </BrowserRouter>
   </StrictMode>

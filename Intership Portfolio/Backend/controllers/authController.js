@@ -13,7 +13,7 @@ const signUp = async (req, res) => {
             res.status(200).send('Email already Exists');
             break;
         case 'COMPANY_EXISTS':
-            res.status(200).json({ status: 'COMPANY_EXISTS', message: 'Company exists. Ask admin for access.' });
+            res.status(200).json({ status: 'COMPANY_EXISTS', message: 'Company exists. Ask admin for access.', companyId: result.companyId });
             break;
         case 'NEW_COMPANY':
             res.status(200).json({ status: 'NEW_COMPANY', message: 'New company signup. Verify email and create company profile.' });
@@ -112,4 +112,54 @@ const resetPassword = async(req, res)=>{
     }
 }
 
-module.exports = { signUp, verifyCode, setPassword, demo, signin, resetPassword };
+const companyProfile = async (req, res) => {
+  try {
+    const {
+      companyName,
+      companySize,
+      companyAddress,
+      website,
+      linkedin,
+      telephoneNumber,
+    } = req.body;
+
+    const companyLogo = req.file; // multer provides this
+    console.log("Body:", req.body);
+    console.log("File:", companyLogo);
+
+    const result = await authService.companyProfile(
+      companyName,
+      companySize,
+      companyLogo,
+      companyAddress,
+      website,
+      linkedin,
+      telephoneNumber
+    );
+
+    if (result.status === "DETAILS_SAVED") {
+      return res.status(200).json({ message: "Company profile data saved" });
+    } else {
+      return res.status(500).json({ message: "Failed to save company profile" });
+    }
+  } catch (err) {
+    console.error("Controller Error:", err);
+    return res.status(500).json({ message: "Server error in controller" });
+  }
+};
+
+const getCompnayById = async (req, res) => {
+    const{ id } = req.params;
+    try{
+        const [rows] = pool.query("SELCET * FROM company_profile WHERE id = ?", [id]);
+        if(rows.lenght == 0){
+            return res.status(404).json({ message: "Company not found" });
+        }
+        res.json(row[0]);
+    }catch (error) {
+    console.error("Error fetching company:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { signUp, verifyCode, setPassword, demo, signin, resetPassword, companyProfile, getCompnayById };
