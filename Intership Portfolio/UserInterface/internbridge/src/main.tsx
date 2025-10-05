@@ -11,7 +11,9 @@ import Demo from './components/Demo'
 import SignIn from './components/Signin'
 import ForgotPassword from './components/ForgotPassword'
 import CompanyProfile from './components/CompanyProfile'
-import CompanyDetails from './CompnayDetails'
+import CompanyDetails from './components/CompnayDetails'
+import MessageAdmin from './components/MessageAdmin'
+import MessageSent from './components/MessageSent'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -25,7 +27,9 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/signin" element={<SignIn />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/company-profile" element={<CompanyProfile />} />
-            <Route path="/company-details/:id" element={<CompanyDetails />} />
+            <Route path="/company-details/:unique_company_id" element={<CompanyDetails />} />
+            <Route path="/message-admin/:compnayUniqueId/:companyName" element={<MessageAdmin />} />
+            <Route path="/message-sent" element={<MessageSent />} />
         </Routes>
     </BrowserRouter>
   </StrictMode>

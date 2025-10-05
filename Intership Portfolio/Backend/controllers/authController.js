@@ -13,7 +13,7 @@ const signUp = async (req, res) => {
             res.status(200).send('Email already Exists');
             break;
         case 'COMPANY_EXISTS':
-            res.status(200).json({ status: 'COMPANY_EXISTS', message: 'Company exists. Ask admin for access.', companyId: result.companyId });
+            res.status(200).json({ status: 'COMPANY_EXISTS', message: 'Company exists. Ask admin for access.', unique_company_id: result.unique_company_id });
             break;
         case 'NEW_COMPANY':
             res.status(200).json({ status: 'NEW_COMPANY', message: 'New company signup. Verify email and create company profile.' });
@@ -148,18 +148,50 @@ const companyProfile = async (req, res) => {
   }
 };
 
-const getCompnayById = async (req, res) => {
-    const{ id } = req.params;
-    try{
-        const [rows] = pool.query("SELCET * FROM company_profile WHERE id = ?", [id]);
-        if(rows.lenght == 0){
-            return res.status(404).json({ message: "Company not found" });
-        }
-        res.json(row[0]);
-    }catch (error) {
-    console.error("Error fetching company:", error);
-    res.status(500).json({ message: "Server error" });
+const getCompnayProfileById = async (req, res) => {
+  const { unique_company_id  } = req.params;
+  console.log("Id from controller is:", unique_company_id);
+
+  try {
+    const rows = await authService.getCompnayProfileById(unique_company_id);
+
+    console.log("Thsi is from Controller:", rows)
+
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    return res.status(200).json(rows[0]); // send only the first company
+  } catch (error) {
+    console.error("Error in controller:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = { signUp, verifyCode, setPassword, demo, signin, resetPassword, companyProfile, getCompnayById };
+const sendMessage = async(req, res) => {
+    try{
+        const { compnayUniqueId } = req.params;
+        const { message } = req.body;
+
+        console.log("This is from controller adminId and message: ", compnayUniqueId, message);
+
+        const getAdminEmail = await authService.findAdminByCompanyId(compnayUniqueId);
+
+        if(!getAdminEmail){
+            return res.status(404).json({message: "No Admin found for this Compnay"});
+        }
+
+        const adminEmail = getAdminEmail.business_email_id;
+        console.log("Admin email to send message:", adminEmail);
+
+        const sendMail = await authService.sendMessage(adminEmail, message);
+
+        res.status(200).json({success: true, message: "Message sent successfully"})
+    }catch(error){
+        res.status(500).json({ message: "Server error", error });
+    }
+
+}
+
+module.exports = { signUp, verifyCode, setPassword, demo, signin, resetPassword, companyProfile, getCompnayProfileById, sendMessage };

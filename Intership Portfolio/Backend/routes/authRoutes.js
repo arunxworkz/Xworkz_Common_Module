@@ -11,7 +11,10 @@ router.post('/setPassword', authController.setPassword);
 router.post('/demo', authController.demo);
 router.post('/signin', authController.signin);
 router.post("/company", upload.single("companyLogo"), authController.companyProfile);
-router.get("/company/:id", authController.getCompnayById);
+router.get("/company-details/:unique_company_id", authController.getCompnayProfileById);
+router.post("/message-admin/:compnayUniqueId", authController.sendMessage);
+
+
 
 
 

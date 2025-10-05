@@ -17,7 +17,7 @@ interface FormErrors {
   [key: string]: string;
 }
 
-function App() {
+function CompanyProfile() {
   const [formData, setFormData] = useState<FormData>({
     companyName: '',
     companySize: '',
@@ -130,20 +130,31 @@ const handleSubmit = async (e: React.FormEvent) => {
 };
 
   if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-blue-600 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
-          <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Success!</h2>
-          <p className="text-gray-600 mb-6">Your company profile has been created successfully.</p>
-          <button
-            onClick={() => setIsSubmitted(false)}
-            className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-lg transition-colors"
-          >
-            Create Another Profile
-          </button>
+   return (
+        <div className="min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-blue-600 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Success!</h2>
+            <p className="text-gray-600 mb-6">Your company profile has been created successfully.</p>
+
+            <button
+              onClick={() => setIsSubmitted(false)}
+              className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-lg transition-colors"
+            >
+              Create Another Profile
+            </button>
+
+            {/* Sign In Link */}
+            <p className="mt-4 text-gray-600">
+              <a
+                href="/signin"
+                className="text-teal-600 font-semibold hover:underline"
+              >
+                Sign In
+              </a>
+            </p>
+          </div>
         </div>
-      </div>
     );
   }
 
@@ -151,7 +162,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     <div 
       className="min-h-screen bg-gradient-to-br from-teal-400 via-cyan-500 to-blue-600 relative"
       style={{
-        backgroundImage: `url('/InternBridge_Digital_Assets copy.jpg')`,
+        backgroundImage: `url('/InternBridge_Digital_Assets.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundBlendMode: 'overlay'
@@ -359,4 +370,4 @@ const handleSubmit = async (e: React.FormEvent) => {
   );
 }
 
-export default App;
+export default CompanyProfile;

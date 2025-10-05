@@ -6,10 +6,12 @@ alter table user_table rename column hr_email_id to business_email_id ;
 ALTER TABLE user_table ADD COLUMN company_id INT REFERENCES company_profile(id);
 alter table user_table add column role enum('ADMIN', 'CO_ADMIN') Default Null;
 alter table user_table add column status enum('PENDING', 'APPROVED', 'REJECTED') Default 'PENDING';
-delete from user_table where is_verified = 0;
+alter table user_table add column co_admin boolean;
+alter table user_table add column request_message varchar(10000);
+alter table user_table modify column company_id varchar(45);
 alter table user_table drop column admin_;
 
-select * from user_table;
+select * from user_table;	
 truncate user_table;
 
 CREATE TABLE demo_requests (

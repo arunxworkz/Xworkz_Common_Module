@@ -18,17 +18,19 @@ function SignUp() {
 
     try {
         const response = await axios.post("http://localhost:8080/auth/signUp", formData);
-        const { status, message } = response.data; // <-- JSON from backend
-
+        const { status, message, unique_company_id } = response.data; // <-- JSON from backend
+        console.log("From Signup frontend: ",unique_company_id);
         if (status === "COMPANY_EXISTS") {
           alert(message);
-          navigate("/verify", { state: { email: formData.email, flow: "company_exists" } });
+          navigate(`/company-details/${unique_company_id}`);
         } else if (status === "NEW_COMPANY") {
           alert(message);
           navigate("/verify", { state: { email: formData.email, flow: "new_company" } });
-        } else if (status === "EMPTY_EMAIL" || status === "INVALID_EMAIL" || status === "EMAIL_EXISTS") {
+        } else if (status === "EMPTY_EMAIL" || status === "INVALID_EMAIL") {
           setMessage(message);
-        } else {
+        } else if (status === "EMAIL_EXISTS"){
+          setMessage("User Exists");
+        }else {
           setMessage("Signup failed. Try again.");
         }
       } catch (error: any) {

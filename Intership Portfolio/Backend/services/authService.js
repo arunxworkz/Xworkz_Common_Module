@@ -55,26 +55,26 @@ const signUp = async (email) => {
         console.log("Company rows: ", compnayRows);
 
         if(compnayRows.length > 0){
-            const companyId = compnayRows[0].id;
+            const unique_company_id = compnayRows[0].unique_company_id;
 
-            console.log("Compnay id: ", companyId);
+            console.log("Compnay id: ", unique_company_id);
 
-            console.log("Compnay Id: ", companyId);
+            // console.log("Compnay Id: ", companyId);
 
-            await pool.query("INSERT INTO user_table (business_email_id, code, is_verified, company_id, role) values(?, ?, ?, ?, ?)",
-                [email, code, 0, companyId, null]
+            await pool.query("INSERT INTO user_table (business_email_id, code, is_verified, company_id, role, co_admin) values(?, ?, ?, ?, ?, ?)",
+                [email, code, 0, unique_company_id, null, 0]
             );
 
             await sendMail(email, "Email verification code", `${code}`);
 
-            return {status : 'COMPANY_EXISTS', message: 'Ask admin to Access' };
+            return {status : 'COMPANY_EXISTS', message: 'Ask admin to Access', unique_company_id: unique_company_id };
         }
         else{
 
             console.log("Email from Else  block: ", email);
 
-            await pool.query("INSERT INTO user_table (business_email_id, code, is_verified, role, status) values (?, ?, ?, ?, ?)", 
-                [email, code, 0, 'ADMIN', 'APPROVED']
+            await pool.query("INSERT INTO user_table (business_email_id, code, is_verified, role, status, co_admin) values (?, ?, ?, ?, ?, ?)", 
+                [email, code, 0, 'ADMIN', 'APPROVED', 0]
             );
 
 
@@ -205,7 +205,7 @@ const companyProfile = async (
         // ✅ multer gives buffer directly
         const imageBuffer = companyLogo ? companyLogo.buffer : null;
 
-        await pool.query(
+        const [companyResult] = await pool.query(
         `INSERT INTO company_profile 
             (unique_company_id, company_name, company_size, company_logo, company_telephone_number, company_website, company_linkedin, admin, company_domain, company_address)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -223,6 +223,10 @@ const companyProfile = async (
         ]
         );
 
+        // const companyId = companyResult.unique_company_id;
+        // console.log(companyId)
+        await pool.query("UPDATE user_table set company_id = ? where role = 'ADMIN'", [unique_company_id]);
+
         return { status: "DETAILS_SAVED" };
     } catch (err) {
         console.error("DB Error:", err);
@@ -230,5 +234,45 @@ const companyProfile = async (
     }
 };
 
+const getCompnayProfileById = async (id) => {
+    console.log("Id from Service is: ", id);
+    try{
+        const [rows] = await pool.query("SELECT * FROM company_profile WHERE unique_company_id = ?", [id]);
+        if(rows.length == null){
+            return [];
+        }
+        console.log("this is form service:", rows);
+        return rows;
+    }catch (error) {
+    console.error("Error fetching company:", error);
+    throw error;
+  }
+};
 
-module.exports = { signUp, verifyCode, setPassword, giveDemo, signin, resetPassword, companyProfile };
+const findAdminByCompanyId = async (id) => {
+    console.log("Admin id from service to find the email: ", id);
+
+    try{
+        const [rows] = await pool.query("SELECT business_email_id FROM user_table where role = 'ADMIN' and company_id = ?", [id]);
+
+        return rows.length > 0 ? rows[0] : null;
+    }catch(error){
+        throw error;
+    }
+};
+
+const sendMessage = async (id, message) => {
+    console.log("This is from the send message service: ", id, message);
+
+    try{
+        const [rows] = await pool.query("UPDATE user_table set  request_message = ? where business_email_id = ?", [message, id]);
+
+        await sendMail(id, "Requesting for access", message);
+    }catch(error){
+        throw error;
+    }
+}
+
+
+
+module.exports = { signUp, verifyCode, setPassword, giveDemo, signin, resetPassword, companyProfile, getCompnayProfileById, findAdminByCompanyId, sendMessage };
