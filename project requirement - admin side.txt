@@ -1,0 +1,21 @@
+Ajax
+logback
+Logger
+validation
+jstl
+email
+image
+Password Encryption
+
+Project name-->YOURNAME_GYM
+
+page1-->Admin page
+Name
+Password
+Insert data manually to db for AdminLogin
+NOTE:passwordEncryption website
+
+after login
+page2-->Successpage(Enquiry,follow,registration,update)
+Enqiry button(name,age,area,phonenumber,distance,status(enquiry)-->enum)
+	

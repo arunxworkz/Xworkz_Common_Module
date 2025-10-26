@@ -1,0 +1,77 @@
+Steps to create a nodejs as backend in MVC structure for project
+
+1) install node js
+2) open the directory where the package.json file needs to be installed 
+3) use command "npm init -y" to create the package.json file
+4) add script in package.json file
+	"start": "npm index.js",
+	"dev": "nodemon index.js"
+5) install the express framework - npm install express
+6) install nodemon - npm install nodemon - for running the server without restarting every time when ever the code in changed.
+7) create an index.js file which will be the starting point of the project
+8) install dotenv - npm install dotenv - environment file
+9) create a '.env' file for configuration(for constants - ex:- server port, database credentials)
+10)In index.js file check whether the port is working or not as below
+		
+		const express = require("express")
+		const app = express()
+		app.use(express.json()) // to pares the json request
+		const PORT = process.env.PORT || 5000
+		app.get("/", (req, res)=>{
+			res.send("Todaya is a good day")
+		})
+		app.listen(PORT)
+
+11)Configuring the db
+	|-> before configuring the db add the details of the database in the .env file
+			DB_HOST = localhost
+			DB_USER = username
+			DB_PASSWORD = password
+			DB_NMAE = name of the database
+
+	|-> establish the connection to the database
+			|-> create a directory called dbConfig	
+				|-> create a file called db.js - add the below code to connect to the database
+						
+						const mysql = require("mysql2)" // based on the required database platform 
+						require("dotenv").config()
+						const connection = mysql.createConnection({
+							host:proccess.env.DB_HOST,
+							host:process.env.DB_USER,
+							host:process.env.DB_PASSWORD,
+							host:process.env.BD_NAME
+						})
+			
+						connection.connect((err)=>{
+							if(err){
+								console.log("Database connection falied")
+							}
+							console.log("Database connection extablished")
+						})
+
+						module.exports = connection
+
+Project structure
+
+Project_Name/
+│
+├── controllers/
+│   └── controllers.js
+│
+├── dbConfig/
+│   └── db.js
+│
+├── routes/
+│   └── routing.js
+│
+├── node_modules/
+│
+├── .env
+│
+├── index.js
+│
+├── package.json
+│
+└── package-lock.json
+
+
